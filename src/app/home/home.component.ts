@@ -23,9 +23,9 @@ export class HomeComponent implements OnInit {
     ngOnInit(){
       const myObservable$=this.courseService.getCourses()
       const course$=myObservable$.pipe(
-        map(data=>{ console.log("testing") 
-        return data["payload"] 
-    })
+        map(data=>data["payload"] ),
+        shareReplay(), //eventhough course$ has more subscribers. this makes sure observable is invloked only once.
+        tap(()=>console.log("we can create log or to check how many times API call happened."))
       )
       this.beginerCourse$=course$.pipe(
         map((data)=>
